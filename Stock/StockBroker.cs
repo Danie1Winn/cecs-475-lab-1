@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Threading;
 namespace Stock
@@ -18,66 +19,68 @@ namespace Stock
 
         //readonly string docPath = @"C:\Users\Documents\CECS 475\Lab3_output.txt";
         readonly string destPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lab1_output.txt");
-        
+
         public string titles = "Broker".PadRight(10) + "Stock".PadRight(15) +
             "Value".PadRight(10) + "Changes".PadRight(10) + "Date and Time";
 
-Console.WriteLine(___________________);
-using (StreamWriter outputFile = new StreamWriter(________, _____________))
-{
-    outputFile.WriteLine(titles);
-}       /// <summary>
-        /// The stockbroker object
-        /// </summary>
-        /// <param name="brokerName">The stockbroker's name</param>
+        Console.WriteLine(titles);
+        using (StreamWriter outputFile = new StreamWriter(destPath, false))
+        {
+            outputFile.WriteLine(titles);
+        }   /// <summary>
+            /// The stockbroker object
+            /// </summary>
+            /// <param name="brokerName">The stockbroker's name</param>
         public StockBroker(string brokerName)
         {
             BrokerName = brokerName;
         }
-//------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Adds stock objects to the stock list
         /// </summary>
         /// <param name="stock">Stock object</param>
         public void AddStock(Stock stock)
         {
-            stocks._____________________________
-        stock.____________________________________
+            stocks.Add(stock);
+            stock.StockEvent += EventHandler;
         }
         /// <summary>
         /// The eventhandler that raises the event of a change
         /// </summary>
         /// <param name="sender">The sender that indicated a change</param>
         /// <param name="e">Event arguments</param>
-    public ______ void EventHandler(Object sender, StockNotification e)
-    {
-        Stock newStock = (Stock)sender;
-        _____ write(sender, e);
-        return;
-    }
-    public _________ write(________, ______ e)
-    {
-        String line = BrokerName.PadRight(16) + e.StockName.PadRight(16) +
-        Convert.ToString(e.CurrentValue).PadRight(16) +
-        Convert.ToString(e.NumChanges).PadRight(16) + DateTime.Now;
-        try
+        public async void EventHandler(Object sender, StockNotification e)
         {
-            if (count == 0)
+            Stock newStock = (Stock)sender;
+            await write(sender, e);
+            return;
+        }
+        public async Task write(Object sender, StockNotification e)
+        {
+            String line = BrokerName.PadRight(16) + e.StockName.PadRight(16) +
+                Convert.ToString(e.CurrentValue).PadRight(16) +
+                Convert.ToString(e.NumChanges).PadRight(16) + DateTime.Now;
+            try
             {
-                Console.WriteLine(titles);
-                using (StreamWriter outputFile = new StreamWriter(destPath, ______))
+                if (count == 0)
                 {
-                    ________________________________________
+                    Console.WriteLine(titles);
+                    using (StreamWriter outputFile = new StreamWriter(destPath, ______))
+                    {
+                        ________________________________________
+                        }
+                } //end if
+                using (StreamWriter outputFile = new StreamWriter(destPath, true))
+                {
+                    await outputFile.WriteLineAsync(line);
                 }
-            } //end if
-            using (StreamWriter outputFile = new StreamWriter(destPath, __________))
-            {
-                ____________ outputFile.__________________(__________);
+                Console.WriteLine(line);
             }
-            Console.WriteLine(__________);
-        }
-        catch (IOException ex)
-        {
-            Console.WriteLine($"Error writing to file: {ex.Message}");
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Error writing to file: {ex.Message}");
+            }
         }
     }
+}
