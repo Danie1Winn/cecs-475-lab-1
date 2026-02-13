@@ -70,9 +70,9 @@ namespace Stock
         public void ChangeStockValue()
         {
             var rand = new Random();
-            CurrentValue += rand.Next(1, MaxChange);
+            CurrentValue += rand.Next(-MaxChange, MaxChange + 1);
             NumChanges++;
-            if ((CurrentValue - InitialValue) > Threshold)
+            if (Math.Abs(CurrentValue - InitialValue) > Threshold)
             { //RAISE THE EVENT
                 StockEvent?.Invoke(this, new StockNotification(StockName, CurrentValue, NumChanges));
             }
