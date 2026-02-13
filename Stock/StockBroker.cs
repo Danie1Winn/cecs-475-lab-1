@@ -66,10 +66,10 @@ namespace Stock
                 if (count == 0)
                 {
                     Console.WriteLine(titles);
-                    using (StreamWriter outputFile = new StreamWriter(destPath, ______))
+                    using (StreamWriter outputFile = new StreamWriter(destPath, false))
                     {
-                        ________________________________________
-                        }
+                        await outputFile.WriteLineAsync(titles);
+                    }
                 } //end if
                 using (StreamWriter outputFile = new StreamWriter(destPath, true))
                 {
