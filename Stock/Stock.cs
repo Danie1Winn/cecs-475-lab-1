@@ -23,11 +23,11 @@ namespace Stock
 
         private readonly Thread _thread;
         public string StockName { get => _name; set => _name = value; }
-        public int InitialValue
-        public int CurrentValue
-        public int MaxChange
-        public int Threshold
-        public int NumChanges
+        public int InitialValue { get => _initialValue; set => _initialValue = value; }
+        public int CurrentValue { get => _currentValue; set => _currentValue = value; }
+        public int MaxChange { get => _maxChange; set => _maxChange = value; }
+        public int Threshold { get => _threshold; set => _threshold = value; }
+        public int NumChanges { get => _numChanges; set => _numChanges = value; }
         //-----------------------------------------------------------------------------
         /// <summary>
         /// Stock class that contains all the information and changes of the stock
@@ -40,11 +40,11 @@ namespace Stock
         {
             _name = name;
             _initialValue = startingValue;
-            _currentValue = InitialValue;
+            _currentValue = startingValue;
             _maxChange = maxChange;
             _threshold = threshold;
-            this._thread = new Thread(new ThreadStart(______________________));
-            _thread.________________;
+            this._thread = new Thread(new ThreadStart(Activate)); // initialize thread with Activate
+            _thread.Start(); // start thread immediately
         }
         //-----------------------------------------------------------------------------------
         /// <summary>
@@ -74,7 +74,7 @@ namespace Stock
             NumChanges++;
             if ((CurrentValue - InitialValue) > Threshold)
             { //RAISE THE EVENT
-                _____ Invoke _____________________________________________________
+                StockEvent?.Invoke(this, new StockNotification(StockName, CurrentValue, NumChanges));
             }
         }
 //------------------------------------------------------------------------------------------------
