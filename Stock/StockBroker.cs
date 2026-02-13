@@ -68,34 +68,5 @@ namespace Stock
                 // Handle or log any file I/O exceptions if needed
             }
         }
-
-        /*
-        public async Task write(Object sender, StockNotification e)
-        {
-            String line = BrokerName.PadRight(16) + e.StockName.PadRight(16) +
-                Convert.ToString(e.CurrentValue).PadRight(16) +
-                Convert.ToString(e.NumChanges).PadRight(16) + DateTime.Now;
-            try
-            {
-                if (count == 0)
-                {
-                    Console.WriteLine(titles);
-                    using (StreamWriter outputFile = new StreamWriter(destPath, false))
-                    {
-                        await outputFile.WriteLineAsync(titles);
-                    }
-                } //end if
-                using (StreamWriter outputFile = new StreamWriter(destPath, true))
-                {
-                    await outputFile.WriteLineAsync(line);
-                }
-                Console.WriteLine(line);
-            }
-            catch (IOException ex)
-            {
-                Console.WriteLine($"Error writing to file: {ex.Message}");
-            }
-        }
-        */
     }
 }
