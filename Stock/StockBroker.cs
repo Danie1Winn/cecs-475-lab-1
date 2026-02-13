@@ -10,6 +10,7 @@ namespace Stock
     {
         public string BrokerName { get; set; }
         public List<Stock> stocks = new List<Stock>();
+        private static bool _headerPrinted = false; // ensures header is only printed once
 
         readonly string destPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lab1_Output.txt");
 
@@ -20,13 +21,18 @@ namespace Stock
         {
             BrokerName = brokerName;
             // Print the header to console
-            Console.WriteLine(titles);
-
-            // Overwrite (false) the file with this same header once
-            using (StreamWriter outputFile = new StreamWriter(destPath, false))
+            if (!_headerPrinted)
             {
-                outputFile.WriteLine(titles);
+                Console.WriteLine(titles);
+                // Overwrite (false) the file with this same header once
+                using (StreamWriter outputFile = new StreamWriter(destPath, false))
+                {
+                    outputFile.WriteLine(titles);
+                }
+                _headerPrinted = true;
             }
+
+
         }
 
         public void AddStock(Stock stock)
